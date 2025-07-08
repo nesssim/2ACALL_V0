@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Call Center Pro') }}</title>
+    <title>{{ config('app.name', '2Acall') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -28,8 +28,7 @@
                             </svg>
                         </div>
                         <span
-                            class="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Call
-                            Center Pro</span>
+                            class="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">2Acall</span>
                     </a>
                 </div>
 
@@ -42,13 +41,100 @@
                     <a href="#apropos"
                         class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">À
                         propos</a>
+                    <a href="#testimonials"
+                        class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Témoignages</a>
+                    @guest
+                        <a href="#emplois"
+                            class="glow-grey block bg-gray-100 rounded-lg px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Offres</a>
+                    @endguest
+                    @auth
+                        <a href="#emplois"
+                            class="sparkle-button glow-purple block px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium text-center">Offres</a>
+                    @endauth
                     <a href="#contact"
                         class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Contact</a>
+                    <!-- CSS personnalisé pour les effets de lueur et de scintillement -->
+                    <style>
+                        @keyframes pulse-grey {
 
+                            0%,
+                            100% {
+                                box-shadow: 0 0 10px rgba(156, 163, 175, 0.3);
+                            }
+
+                            50% {
+                                box-shadow: 0 0 20px rgba(156, 163, 175, 0.6);
+                            }
+                        }
+
+                        @keyframes pulse-purple {
+
+                            0%,
+                            100% {
+                                box-shadow: 0 0 15px rgba(168, 85, 247, 0.5), 0 0 5px rgba(255, 255, 255, 0.5) inset;
+                            }
+
+                            50% {
+                                box-shadow: 0 0 30px rgba(168, 85, 247, 0.8), 0 0 10px rgba(255, 255, 255, 0.5) inset;
+                            }
+                        }
+
+                        .glow-grey {
+                            animation: pulse-grey 3s infinite ease-in-out;
+                        }
+
+                        .glow-purple {
+                            animation: pulse-purple 2.5s infinite ease-in-out;
+                        }
+
+                        .sparkle-button {
+                            position: relative;
+                            overflow: hidden;
+                        }
+
+                        .sparkle-button::after {
+                            content: '';
+                            position: absolute;
+                            top: -50%;
+                            left: -50%;
+                            width: 200%;
+                            height: 200%;
+                            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+                            background-repeat: no-repeat;
+                            background-size: 5% 5%;
+                            opacity: 0;
+                            animation: sparkle 3s infinite linear;
+                            pointer-events: none;
+                        }
+
+                        @keyframes sparkle {
+                            0% {
+                                transform: translate(25%, 100%);
+                                opacity: 0;
+                            }
+
+                            25% {
+                                opacity: 1;
+                            }
+
+                            50% {
+                                transform: translate(50%, -100%);
+                                opacity: 1;
+                            }
+
+                            75% {
+                                opacity: 0;
+                            }
+
+                            100% {
+                                transform: translate(75%, 100%);
+                                opacity: 0;
+                            }
+                        }
+                    </style>
                     @auth
                         <div class="flex items-center space-x-4">
-                            <a href="{{ route('dashboard') }}"
-                                class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Dashboard</a>
+
                             <a href="{{ route('profile.edit') }}"
                                 class="flex items-center space-x-3 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,6 +182,10 @@
                 <a href="#apropos"
                     class="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">À
                     propos</a>
+                <a href="#testimonials"
+                    class="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Témoignages</a>
+                <a href="#emplois"
+                    class="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Offres</a>
                 <a href="#contact"
                     class="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Contact</a>
                 @auth

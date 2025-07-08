@@ -4,10 +4,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobOfferController;
 use App\Http\Controllers\ContactMessageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\WelcomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [WelcomeController::class, 'index'])->name('home');
+
+
+
 
 // Route pour traiter les messages de contact (accessible à tous)
 Route::post('/contact', [ContactMessageController::class, 'store'])->name('contact.store');
@@ -19,17 +22,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/contact-messages', [ContactMessageController::class, 'index'])->name('admin.contact-messages');
+    Route::patch('/contact-messages/{contactMessage}/status', [ContactMessageController::class, 'updateStatus'])->name('admin.contact-messages.update-status');
+    Route::patch('/contact-messages/{contactMessage}/read', [ContactMessageController::class, 'markAsRead'])->name('admin.contact-messages.read');
+    Route::patch('/contact-messages/{contactMessage}/treated', [ContactMessageController::class, 'markAsTreated'])->name('admin.contact-messages.treated');
+    Route::patch('/contact-messages/{contactMessage}/close', [ContactMessageController::class, 'close'])->name('admin.contact-messages.close');
+});
 // Routes admin (Dashboard et gestion)
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/dashboard', function () {
-        $stats = [
-            'total_jobs' => \App\Models\JobOffer::count(),
-            'active_jobs' => \App\Models\JobOffer::active()->count(),
-            'total_messages' => \App\Models\ContactMessage::count(),
-            'unread_messages' => \App\Models\ContactMessage::unread()->count(),
-        ];
-        return view('dashboard', compact('stats'));
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');    
 
     // Gestion des offres d'emploi
     Route::prefix('admin')->name('admin.')->group(function () {

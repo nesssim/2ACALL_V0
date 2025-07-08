@@ -22,8 +22,7 @@
                             </svg>
                         </div>
                         <span
-                            class="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Call
-                            Center Pro</span>
+                            class="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">2Acall</span>
                     </a>
                 </div>
 

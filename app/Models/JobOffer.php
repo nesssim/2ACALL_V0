@@ -9,23 +9,25 @@ class JobOffer extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'title',
-        'description',
-        'location',
-        'salary_range',
-        'contract_type',
-        'work_type',
-        'requirements',
-        'benefits',
-        'is_active',
-        'category',
-    ];
+protected $fillable = [
+    'title',
+    'description',
+    'location',
+    'salary',
+    'is_salary_negotiable',
+    'contract_type',
+    'work_type',
+    'requirements',
+    'benefits',
+    'is_active',
+    'category',
+];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
-
+protected $casts = [
+    'is_active' => 'boolean',
+    'is_salary_negotiable' => 'boolean',
+    'salary' => 'float',
+];
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

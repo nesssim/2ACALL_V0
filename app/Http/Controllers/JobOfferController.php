@@ -18,27 +18,31 @@ class JobOfferController extends Controller
         return view('admin.job-offers.create');
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string|max:255',
-            'salary_range' => 'required|string|max:255',
-            'contract_type' => 'required|in:CDI,CDD,Stage,Freelance',
-            'work_type' => 'required|in:Temps plein,Temps partiel,Remote',
-            'requirements' => 'nullable|string',
-            'benefits' => 'nullable|string',
-            'category' => 'required|string|max:255',
-            'is_active' => 'boolean',
-        ]);
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'company' => 'required|string|max:255',
+        'location' => 'required|string|max:255',
+        'salary' => 'nullable|numeric|min:0',
+        'is_salary_negotiable' => 'boolean',
+        'contract_type' => 'required|in:CDI,CDD,Stage,Freelance',
+        'work_type' => 'required|in:Temps plein,Temps partiel,Remote',
+        'category' => 'nullable|string|max:255',
+        'description' => 'required|string',
+        'requirements' => 'nullable|string',
+        'benefits' => 'nullable|string',
+        'is_active' => 'boolean',
+    ]);
 
-        JobOffer::create($validated);
+    $validated['is_active'] = $request->has('is_active');
+    $validated['is_salary_negotiable'] = $request->has('is_salary_negotiable');
 
-        return redirect()->route('admin.job-offers.index')
-            ->with('success', 'Offre d\'emploi créée avec succès !');
-    }
+    JobOffer::create($validated);
 
+    return redirect()->route('admin.job-offers.index')
+        ->with('success', "Offre d'emploi créée avec succès !");
+}
     public function show(JobOffer $jobOffer)
     {
         return view('admin.job-offers.show', compact('jobOffer'));
@@ -49,26 +53,30 @@ class JobOfferController extends Controller
         return view('admin.job-offers.edit', compact('jobOffer'));
     }
 
-    public function update(Request $request, JobOffer $jobOffer)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string|max:255',
-            'salary_range' => 'required|string|max:255',
-            'contract_type' => 'required|in:CDI,CDD,Stage,Freelance',
-            'work_type' => 'required|in:Temps plein,Temps partiel,Remote',
-            'requirements' => 'nullable|string',
-            'benefits' => 'nullable|string',
-            'category' => 'required|string|max:255',
-            'is_active' => 'boolean',
-        ]);
+   public function update(Request $request, JobOffer $jobOffer)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'location' => 'required|string|max:255',
+        'salary' => 'nullable|numeric|min:0',
+        'is_salary_negotiable' => 'boolean',
+        'contract_type' => 'required|in:CDI,CDD,Stage,Freelance',
+        'work_type' => 'required|in:Temps plein,Temps partiel,Remote',
+        'requirements' => 'nullable|string',
+        'benefits' => 'nullable|string',
+        'category' => 'nullable|string|max:255',
+        'is_active' => 'boolean',
+    ]);
 
-        $jobOffer->update($validated);
+    $validated['is_active'] = $request->has('is_active');
+    $validated['is_salary_negotiable'] = $request->has('is_salary_negotiable');
 
-        return redirect()->route('admin.job-offers.index')
-            ->with('success', 'Offre d\'emploi mise à jour avec succès !');
-    }
+    $jobOffer->update($validated);
+
+    return redirect()->route('admin.job-offers.index')
+        ->with('success', "Offre d'emploi modifiée avec succès !");
+}
 
     public function destroy(JobOffer $jobOffer)
     {
